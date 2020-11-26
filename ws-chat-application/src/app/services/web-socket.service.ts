@@ -12,7 +12,7 @@ export class WebSocketService {
   constructor() { }
 
   public openWebSocket(){
-    this.webSocket = new WebSocket('ws://localhost:8080/chat');
+    this.webSocket = new WebSocket('ws://172.31.1.70:8080/chat');
 
     this.webSocket.onopen = (event) => {
       console.log('Open: ', event);
