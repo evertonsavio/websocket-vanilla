@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('ws-client app is running!');
+    expect(page.getTitleText()).toEqual('ws-chat-application app is running!');
   });
 
   afterEach(async () => {
