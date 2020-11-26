@@ -14,6 +14,8 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     public static final String CHAT_ENDPOINT = "/chat";
 
+    
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
