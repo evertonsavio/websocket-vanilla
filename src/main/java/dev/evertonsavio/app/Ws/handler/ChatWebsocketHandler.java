@@ -14,7 +14,7 @@ public class ChatWebsocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("Session: " + session);
+        System.out.print("Session: " + session);
         webSocketSessions.stream().forEach(webSocketSession -> System.out.println(webSocketSession));
         webSocketSessions.add(session);
     }

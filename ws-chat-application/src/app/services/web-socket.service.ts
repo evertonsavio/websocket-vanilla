@@ -12,13 +12,14 @@ export class WebSocketService {
   constructor() { }
 
   public openWebSocket(){
-    this.webSocket = new WebSocket('ws://172.31.1.70:8080/chat');
+    this.webSocket = new WebSocket('ws://localhost:8081/chat');
 
     this.webSocket.onopen = (event) => {
       console.log('Open: ', event);
     };
 
     this.webSocket.onmessage = (event) => {
+      console.log("EVENTDATA: ",event.data)
       const chatMessageDto = JSON.parse(event.data);
       this.chatMessages.push(chatMessageDto);
     };
