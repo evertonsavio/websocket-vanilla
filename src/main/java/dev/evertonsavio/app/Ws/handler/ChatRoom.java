@@ -49,20 +49,44 @@ public class ChatRoom extends AbstractWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession websocketsession, TextMessage message) throws IOException {
         logger.info("INFO_SESS: "+ websocketsession);
-        for(WebSocketSession session : sessionList){
-            logger.info(message.getPayload());
-            logger.info(session.getId());
 
-            Gson gson = new Gson();
+        Gson gson = new Gson();
+        MessageModel messageModel = gson.fromJson(message.getPayload(), MessageModel.class);
 
-            MessageModel messageModel = gson.fromJson(message.getPayload(), MessageModel.class);
-            messageModel.setUser(websocketsession.getAttributes().get("user").toString());
+        if(messageModel.getUser().equals("")){
 
-            logger.info(messageModel.getUser());
-            logger.info(messageModel.getMessage());
-            TextMessage textMessage = new TextMessage(messageModel.toString());
-            session.sendMessage(textMessage);
+            logger.info("VALOR NULO");
+
+            for(WebSocketSession session : sessionList){
+                logger.info(message.getPayload());
+                logger.info(session.getId());
+
+                messageModel.setUser(websocketsession.getAttributes().get("user").toString());
+
+                logger.info(messageModel.getUser());
+                logger.info(messageModel.getMessage());
+                TextMessage textMessage = new TextMessage(messageModel.toString());
+                session.sendMessage(textMessage);
+            }
+        }else{
+            for(WebSocketSession sess: sessionList){
+                if(sess.getAttributes().get("user").equals(messageModel.getUser())){
+
+                    logger.info("IGUAL A UM USUARIO EXISTENTE");
+
+                    messageModel.setUser(websocketsession.getAttributes().get("user").toString());
+
+                    logger.info(messageModel.getUser());
+                    logger.info(messageModel.getMessage());
+                    TextMessage textMessage = new TextMessage(messageModel.toString());
+                    sess.sendMessage(textMessage);
+                }
+            }
         }
+
+
+
+
        /* String payload=message.getPayload();
         String textString;
         try {
