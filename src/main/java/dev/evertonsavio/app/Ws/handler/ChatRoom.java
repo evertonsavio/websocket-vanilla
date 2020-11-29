@@ -33,7 +33,8 @@ public class ChatRoom extends AbstractWebSocketHandler {
         logger.info("Connection established..."+webSocketSession.getRemoteAddress());
         logger.info(webSocketSession.getAttributes().get("user")+" Login");
         //webSocketSession.sendMessage(new TextMessage("I'm "+(webSocketSession.getAttributes().get("user"))));
-        webSocketSession.sendMessage(new TextMessage("{\"user\":\"" +(webSocketSession.getAttributes().get("user")) + "\",\"message\":\"Hello There\"}"));
+        webSocketSession
+                .sendMessage(new TextMessage("{\"user\":\"IDENTIDADE\",\"message\":\"Você é o "+(webSocketSession.getAttributes().get("user"))+"\"}"));
         logger.info("I'm "+(webSocketSession.getAttributes().get("user")));
         sessionList.add(webSocketSession);
     }
@@ -47,19 +48,20 @@ public class ChatRoom extends AbstractWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession websocketsession, TextMessage message) throws IOException {
-        for(WebSocketSession webSocketSession : sessionList){
+        logger.info("INFO_SESS: "+ websocketsession);
+        for(WebSocketSession session : sessionList){
             logger.info(message.getPayload());
-            logger.info(webSocketSession.getId());
+            logger.info(session.getId());
 
             Gson gson = new Gson();
 
             MessageModel messageModel = gson.fromJson(message.getPayload(), MessageModel.class);
-            messageModel.setUser(webSocketSession.getAttributes().get("user").toString());
+            messageModel.setUser(websocketsession.getAttributes().get("user").toString());
 
             logger.info(messageModel.getUser());
             logger.info(messageModel.getMessage());
             TextMessage textMessage = new TextMessage(messageModel.toString());
-            websocketsession.sendMessage(textMessage);
+            session.sendMessage(textMessage);
         }
        /* String payload=message.getPayload();
         String textString;

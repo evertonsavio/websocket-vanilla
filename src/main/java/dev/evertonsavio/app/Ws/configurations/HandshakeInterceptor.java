@@ -25,8 +25,9 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
     }
 
     public String getRandomNickName(){
-        String[] nickNameArray={"Captain America","Deadpool","Hawkeye","Hulk","Iron Man","Spider Man","Thor","Wolverine","Black Panther","Colossus"};
+        String[] nickNameArray={"Captão América","Deadpool","Superman","Hulk","Homen de Ferro","Homem Aranha","Thor",
+                "Wolverine","Pantera Negra","Colossus", "The Flash", "Aquaman", "Cyborg", "Batman"};
         Random random=new Random();
-        return nickNameArray[random.nextInt(10)];
+        return nickNameArray[random.nextInt(13)];
     }
 }
