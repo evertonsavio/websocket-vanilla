@@ -15,10 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChatRoom extends AbstractWebSocketHandler {
 
@@ -34,7 +33,7 @@ public class ChatRoom extends AbstractWebSocketHandler {
         logger.info(webSocketSession.getAttributes().get("user")+" Login");
         //webSocketSession.sendMessage(new TextMessage("I'm "+(webSocketSession.getAttributes().get("user"))));
         webSocketSession
-                .sendMessage(new TextMessage("{\"user\":\"IDENTIDADE\",\"message\":\"Você é o "+(webSocketSession.getAttributes().get("user"))+"\"}"));
+                .sendMessage(new TextMessage("{\"user\":\"LOGADO COM SUCESSO\",\"message\":\"Você é o "+(webSocketSession.getAttributes().get("user"))+"\"}"));
         logger.info("I'm "+(webSocketSession.getAttributes().get("user")));
         sessionList.add(webSocketSession);
     }
@@ -61,7 +60,7 @@ public class ChatRoom extends AbstractWebSocketHandler {
                 logger.info(message.getPayload());
                 logger.info(session.getId());
 
-                messageModel.setUser(websocketsession.getAttributes().get("user").toString());
+                messageModel.setUser(websocketsession.getAttributes().get("user").toString() + " para todos");
 
                 logger.info(messageModel.getUser());
                 logger.info(messageModel.getMessage());
@@ -69,7 +68,28 @@ public class ChatRoom extends AbstractWebSocketHandler {
                 session.sendMessage(textMessage);
             }
         }else{
-            for(WebSocketSession sess: sessionList){
+
+            try {
+                List<WebSocketSession> sessions = sessionList.stream().filter(session -> session.getAttributes()
+                        .get("user")
+                        .equals(messageModel.getUser()))
+                        .collect(Collectors.toList());
+
+                System.out.println(sessions);
+
+                messageModel.setUser(websocketsession.getAttributes().get("user").toString() + " para você");
+                TextMessage toMessage = new TextMessage(messageModel.toString());
+                sessions.get(0).sendMessage(toMessage);
+
+                messageModel.setUser(" Você para " + sessions.get(0).getAttributes().get("user"));
+                TextMessage fromMessage = new TextMessage(messageModel.toString());
+                websocketsession.sendMessage(fromMessage);
+            }catch (Exception e){
+                e.getLocalizedMessage();
+            }
+
+            
+/*            for(WebSocketSession sess: sessionList){
                 if(sess.getAttributes().get("user").equals(messageModel.getUser())){
 
                     logger.info("IGUAL A UM USUARIO EXISTENTE");
@@ -81,7 +101,7 @@ public class ChatRoom extends AbstractWebSocketHandler {
                     TextMessage textMessage = new TextMessage(messageModel.toString());
                     sess.sendMessage(textMessage);
                 }
-            }
+            }*/
         }
 
 
