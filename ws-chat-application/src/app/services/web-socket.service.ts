@@ -14,7 +14,7 @@ export class WebSocketService {
   public openWebSocket(){
 
 
-    this.webSocket = new WebSocket(`ws://localhost:8009/chat/${Math.random()}`,'Authorization');
+    this.webSocket = new WebSocket(`ws://localhost:9011/websocket-service/socket/eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzYWViYzcxZC1iZGMwLTQ3YmQtOGMzMi1lYTdhYmZhNjdmZGEiLCJleHAiOjE2MTA4MzE0MDV9.TAvdyZ7XtfCN8kkidAoOhPtCJuNleCAvi_X7bF7Q-wqze4G3i3osU_4LJ_r6YTs0BPzjnjzR693HA_O6-eJaaApdtidg`);
 
     this.webSocket.onopen = (event) => {
       console.log('Open: ', event);

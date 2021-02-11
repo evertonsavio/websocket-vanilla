@@ -127,6 +127,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ws-chat-application"
+    }
+  },
+  "defaultProject": "ws-chat-application",
+  "cli": {
+    "analytics": false
+  }
 }
